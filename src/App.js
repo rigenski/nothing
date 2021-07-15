@@ -5,23 +5,27 @@ import Header from "./components/Header";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
 import Register from "./containers/Register";
+import { Provider } from "react-redux";
+import { store } from "./config/redux/store";
 
 function App() {
   return (
-    <Router>
-      <Fragment>
-        <Route path="/" exact>
-          <Header />
-          <Home />
-        </Route>
-        <Route path="/register">
-          <Register />
-        </Route>
-        <Route path="/login">
-          <Login />
-        </Route>
-      </Fragment>
-    </Router>
+    <Provider store={store}>
+      <Router>
+        <Fragment>
+          <Route path="/" exact>
+            <Header />
+            <Home />
+          </Route>
+          <Route path="/register">
+            <Register />
+          </Route>
+          <Route path="/login">
+            <Login />
+          </Route>
+        </Fragment>
+      </Router>
+    </Provider>
   );
 }
 

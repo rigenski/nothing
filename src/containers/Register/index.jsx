@@ -1,9 +1,44 @@
-import React from "react";
+import React, { useState } from "react";
+import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { registerUser } from "../../config/redux/action";
 import Illust from "./../../assets/img/illust-login.svg";
 
 function Register(props) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [emailValidate, setEmailValidate] = useState([false, ""]);
+  const [passwordValidate, setPasswordValidate] = useState([false, ""]);
   const history = useHistory();
+
+  const handleChangeText = (e) => {
+    if (e.target.id === "email") {
+      setEmail(e.target.value);
+    } else if (e.target.id === "password") {
+      setPassword(e.target.value);
+    }
+  };
+
+  const handleRegisterSubmit = async () => {
+    const res = await props
+      .registerUser({ email, password })
+      .catch((err) => err);
+
+    if (res === true) {
+      setEmail("");
+      setPassword("");
+      setEmailValidate([false, ""]);
+      setPasswordValidate([false, ""]);
+    } else {
+      const { code, message } = res;
+
+      if (code === "auth/invalid-email") {
+        setEmailValidate([true, message]);
+      } else {
+        setPasswordValidate([true, message]);
+      }
+    }
+  };
 
   return (
     <main className="h-screen flex">
@@ -24,17 +59,37 @@ function Register(props) {
                 <label htmlFor="email">Email :</label>
                 <input
                   type="text"
-                  className="w-full block outline-none font-child bg-gray-200 text-black my-1 py-1 border-b-2 border-black"
+                  id="email"
+                  className={`w-full block outline-none font-child bg-gray-200 text-black my-1 py-1 border-b-2 ${
+                    emailValidate[0] ? "border-red-500" : "border-black"
+                  }`}
                   placeholder="user@email.com"
+                  value={email}
+                  onChange={handleChangeText}
                 />
+                {emailValidate[0] ? (
+                  <span className="text-sm text-red-500">
+                    * {emailValidate[1]}
+                  </span>
+                ) : null}
               </div>
               <div className="password mt-2">
                 <label htmlFor="email">Password :</label>
                 <input
                   type="password"
-                  className="w-full block outline-none font-child bg-gray-200 text-black my-1 py-1 border-b-2 border-black"
+                  id="password"
+                  className={`w-full block outline-none font-child bg-gray-200 text-black my-1 py-1 border-b-2 border-black ${
+                    passwordValidate[0] ? "border-red-500" : "border-black"
+                  }`}
                   placeholder="********"
+                  value={password}
+                  onChange={handleChangeText}
                 />
+                {passwordValidate[0] ? (
+                  <span className="text-sm text-red-500">
+                    * {passwordValidate[1]}
+                  </span>
+                ) : null}
               </div>
               <div className="submit my-4 flex justify-between items-center">
                 <p className="text-xs">
@@ -46,8 +101,15 @@ function Register(props) {
                     Login
                   </span>
                 </p>
-                <button className="shadow-child font-child px-4 py-2 bg-yellow-400 border-2 border-black rounded">
-                  <span className="cursor-pointer">Register</span>
+                <button
+                  className={`shadow-child font-child px-4 py-2 border-2 border-black rounded ${
+                    props.isLoading
+                      ? "cursor-not-allowed bg-gray-400"
+                      : "cursor-pointer bg-yellow-400"
+                  }`}
+                  onClick={handleRegisterSubmit}
+                >
+                  Register
                 </button>
               </div>
             </div>
@@ -58,4 +120,12 @@ function Register(props) {
   );
 }
 
-export default Register;
+const reduxState = (state) => ({
+  isLoading: state.isLoading,
+});
+
+const reduxDispatch = (dispatch) => ({
+  registerUser: (data) => dispatch(registerUser(data)),
+});
+
+export default connect(reduxState, reduxDispatch)(Register);
