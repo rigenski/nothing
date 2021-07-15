@@ -1,0 +1,18 @@
+@import url("https://fonts.googleapis.com/css2?family=Comfortaa&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap");
+
+.font-parent {
+  font-family: "Comfortaa", cursive;
+}
+
+.font-child {
+  font-family: "IBM Plex Mono", monospace;
+}
+
+.shadow-parent {
+  box-shadow: 0.4rem 0.4rem 0 #000;
+}
+
+.shadow-child {
+  box-shadow: 0.2rem 0.2rem 0 #000;
+}
