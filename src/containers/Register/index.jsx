@@ -24,12 +24,7 @@ function Register(props) {
       .registerUser({ email, password })
       .catch((err) => err);
 
-    if (res === true) {
-      setEmail("");
-      setPassword("");
-      setEmailValidate([false, ""]);
-      setPasswordValidate([false, ""]);
-    } else {
+    if (res.code) {
       const { code, message } = res;
 
       if (code === "auth/invalid-email") {
@@ -37,6 +32,13 @@ function Register(props) {
       } else {
         setPasswordValidate([true, message]);
       }
+    } else {
+      setEmail("");
+      setPassword("");
+      setEmailValidate([false, ""]);
+      setPasswordValidate([false, ""]);
+
+      history.push("/login");
     }
   };
 
