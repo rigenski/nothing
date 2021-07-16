@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import ButtonColor from "../../components/ButtonColor";
 import {
   deleteDataNote,
+  getDataNotes,
   postDataNote,
   updateDataNote,
 } from "../../config/redux/action";
@@ -11,39 +12,41 @@ import Card from "./../../components/Card";
 function Home(props) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [focusColor, setFocusColor] = useState("yellow");
+  const [color, setColor] = useState("yellow");
   const [isFormFocus, setFormFocus] = useState(false);
   const [isFormValue, setFormValue] = useState(false);
   const noteColor = ["yellow", "blue", "green", "red", "purple"];
 
   const onFormFocus = () => {
     setFormFocus(true);
-    handleSelectColor(focusColor);
   };
 
   const handleCancelForm = () => {
-    const userData = JSON.parse(localStorage.getItem("auth"));
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const { lastNote, deleteNote, changeLastNote } = props;
 
     const data = {
       userId: userData.uid,
-      noteId: props.lastNote,
+      noteId: lastNote,
     };
 
-    if (!title || !content) {
-      if (props.lastNote) {
-        props.deleteNote(data);
+    if (!title && !content) {
+      if (lastNote) {
+        deleteNote(data);
       }
     }
 
     setFormFocus(false);
+    changeLastNote();
+    getDataNotes();
   };
 
-  const handleSelectColor = (color) => {
-    setFocusColor(color);
+  const handleSelectColor = (selectColor) => {
+    setColor(selectColor);
 
     if (isFormFocus) {
-      const colorContainer = document.querySelector(`.btn-${color}`);
-      colorContainer.innerHTML = `<div class="h-full w-full bg-${color}-400 rounded-full"></div>`;
+      const colorContainer = document.querySelector(`.btn-${selectColor}`);
+      colorContainer.innerHTML = `<div class="h-full w-full bg-${selectColor}-400 rounded-full"></div>`;
     }
   };
 
@@ -56,35 +59,50 @@ function Home(props) {
   };
 
   const handleSaveNote = () => {
-    const userData = JSON.parse(localStorage.getItem("auth"));
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const { lastNote, saveNote, updateNote } = props;
 
     const data = {
       title: title,
       content: content,
       date: new Date().getTime(),
-      color: focusColor,
+      color: color,
       userId: userData.uid,
     };
 
     if (isFormValue) {
-      data.noteId = props.lastNote;
-      props.updateNote(data);
+      data.noteId = lastNote;
+
+      updateNote(data);
     } else if (title || content) {
-      props.saveNote(data);
+      saveNote(data);
+
       setFormValue(true);
     }
   };
 
+  const getDataNotes = () => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const { getNotes } = props;
+
+    getNotes(userData.uid);
+  };
+
+  useEffect(() => {
+    getDataNotes();
+  }, []);
+
   useEffect(() => {
     handleSaveNote();
-  }, [title, content, focusColor]);
+  }, [title, content, color]);
 
   useEffect(() => {
     if (isFormFocus) {
-      handleSelectColor(focusColor);
+      handleSelectColor(color);
     } else {
       setTitle("");
       setContent("");
+      setColor("yellow");
       setFormValue(false);
     }
   }, [isFormFocus]);
@@ -113,31 +131,6 @@ function Home(props) {
                   autoFocus
                 ></textarea>
                 <div className="flex justify-between items-center mt-2">
-                  <div className="flex items-center">
-                    <button onClick={handleCancelForm}>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="h-7 w-7 text-red-400"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="4"
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                    </button>
-                    {props.loading ? (
-                      <img
-                        src="https://media.tenor.com/images/69305e176c3858ae307c044d47823981/tenor.gif"
-                        alt=""
-                        className="h-6 ml-1"
-                      />
-                    ) : null}
-                  </div>
                   <div>
                     {noteColor.map((color, index) => {
                       return (
@@ -148,6 +141,49 @@ function Home(props) {
                         />
                       );
                     })}
+                  </div>
+                  <div className="flex items-center">
+                    {props.loading ? (
+                      <img
+                        src="https://media.tenor.com/images/69305e176c3858ae307c044d47823981/tenor.gif"
+                        alt=""
+                        className="h-6"
+                      />
+                    ) : isFormValue ? (
+                      <button onClick={handleCancelForm}>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-7 w-7 text-green-400"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={4}
+                            d="M5 13l4 4L19 7"
+                          />
+                        </svg>
+                      </button>
+                    ) : (
+                      <button onClick={handleCancelForm}>
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-7 w-7 text-red-400"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth={4}
+                            d="M6 18L18 6M6 6l12 12"
+                          />
+                        </svg>
+                      </button>
+                    )}
                   </div>
                 </div>
               </Fragment>
@@ -165,12 +201,12 @@ function Home(props) {
           </div>
         </div>
         <div className="flex flex-row flex-wrap mt-6">
-          <Card color="blue" />
-          <Card color="yellow" />
-          <Card color="red" />
-          <Card color="yellow" />
-          <Card color="green" />
-          <Card color="purple" />
+          {props.notes
+            .slice(0)
+            .reverse()
+            .map((note, index) => {
+              return <Card data={note} key={index} />;
+            })}
         </div>
       </div>
     </main>
@@ -180,12 +216,15 @@ function Home(props) {
 const reduxState = (state) => ({
   loading: state.isLoading,
   lastNote: state.lastNote,
+  notes: state.notes,
 });
 
 const reduxDispatch = (dispatch) => ({
+  getNotes: (data) => dispatch(getDataNotes(data)),
   saveNote: (data) => dispatch(postDataNote(data)),
   updateNote: (data) => dispatch(updateDataNote(data)),
   deleteNote: (data) => dispatch(deleteDataNote(data)),
+  changeLastNote: () => dispatch({ type: "CHANGE_LASTNOTE", value: "" }),
 });
 
 export default connect(reduxState, reduxDispatch)(Home);

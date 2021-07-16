@@ -68,6 +68,26 @@ export const postDataNote = (data) => (dispatch) => {
   });
 };
 
+export const getDataNotes = (userId) => (dispatch) => {
+  const url = database.ref("notes/" + userId);
+  return new Promise((resolve, reject) => {
+    url.once("value").then((snapshot) => {
+      const data = [];
+      if (snapshot.val()) {
+        Object.keys(snapshot.val()).map((key) => {
+          data.push({
+            id: key,
+            data: snapshot.val()[key],
+          });
+        });
+
+        dispatch({ type: "SET_NOTES", value: data });
+        resolve(true);
+      }
+    });
+  });
+};
+
 export const updateDataNote = (data) => (dispatch) => {
   dispatch({ type: "CHANGE_ISLOADING", value: true });
 

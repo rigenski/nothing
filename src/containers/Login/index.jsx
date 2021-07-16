@@ -31,7 +31,7 @@ function Login(props) {
         setPasswordValidate([true, message]);
       }
     } else {
-      localStorage.setItem("auth", JSON.stringify(res));
+      localStorage.setItem("user", JSON.stringify(res));
       setEmail("");
       setPassword("");
       setEmailValidate([false, ""]);
