@@ -88,6 +88,19 @@ function Home(props) {
     getNotes(userData.uid);
   };
 
+  const deleteDataNote = (id) => {
+    const userData = JSON.parse(localStorage.getItem("user"));
+    const { deleteNote } = props;
+
+    const data = {
+      userId: userData.uid,
+      noteId: id,
+    };
+
+    deleteNote(data);
+    getDataNotes();
+  };
+
   useEffect(() => {
     getDataNotes();
   }, []);
@@ -205,7 +218,13 @@ function Home(props) {
             .slice(0)
             .reverse()
             .map((note, index) => {
-              return <Card data={note} key={index} />;
+              return (
+                <Card
+                  data={note}
+                  handleRemoveNote={deleteDataNote}
+                  key={index}
+                />
+              );
             })}
         </div>
       </div>
