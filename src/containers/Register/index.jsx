@@ -105,7 +105,7 @@ function Register(props) {
                 </p>
                 <button
                   className={`shadow-child font-child px-4 py-2 border-2 border-black rounded ${
-                    props.isLoading
+                    props.loading
                       ? "cursor-not-allowed bg-gray-400"
                       : "cursor-pointer bg-yellow-400"
                   }`}
@@ -123,7 +123,7 @@ function Register(props) {
 }
 
 const reduxState = (state) => ({
-  isLoading: state.isLoading,
+  loading: state.isLoading,
 });
 
 const reduxDispatch = (dispatch) => ({

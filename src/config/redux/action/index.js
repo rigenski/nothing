@@ -42,13 +42,60 @@ export const loginUser = (data) => (dispatch) => {
 };
 
 export const postDataNote = (data) => (dispatch) => {
-  firebase
-    .database()
-    .ref("notes/" + data.userId)
-    .push({
-      title: data.title,
-      content: data.content,
-      date: data.date,
-      color: data.color,
-    });
+  dispatch({ type: "CHANGE_ISLOADING", value: true });
+  return new Promise((resolve, reject) => {
+    firebase
+      .database()
+      .ref("notes/" + data.userId)
+      .push({
+        title: data.title,
+        content: data.content,
+        date: data.date,
+        color: data.color,
+      })
+      .then((res) => {
+        const data = res._delegate._path.pieces_;
+        const id = data.slice(-1)[0];
+
+        dispatch({ type: "CHANGE_LASTNOTE", value: id });
+        dispatch({ type: "CHANGE_ISLOADING", value: false });
+        resolve(true);
+      })
+      .catch((err) => {
+        dispatch({ type: "CHANGE_ISLOADING", value: false });
+        reject(err);
+      });
+  });
+};
+
+export const updateDataNote = (data) => (dispatch) => {
+  dispatch({ type: "CHANGE_ISLOADING", value: true });
+
+  const url = database.ref(`notes/${data.userId}/${data.noteId}`);
+  return new Promise((resolve, reject) => {
+    url.set(
+      {
+        title: data.title,
+        content: data.content,
+        date: data.date,
+        color: data.color,
+      },
+      (err) => {
+        if (err) {
+          dispatch({ type: "CHANGE_ISLOADING", value: false });
+          reject(false);
+        } else {
+          dispatch({ type: "CHANGE_ISLOADING", value: false });
+          resolve(true);
+        }
+      }
+    );
+  });
+};
+
+export const deleteDataNote = (data) => (dispatch) => {
+  const url = database.ref(`notes/${data.userId}/${data.noteId}`);
+  return new Promise((resolve, reject) => {
+    url.remove();
+  });
 };

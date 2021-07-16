@@ -2,7 +2,7 @@ import React from "react";
 
 function Card(props) {
   return (
-    <div className="w-1/2 md:w/1-3 lg:w-1/4 p-2">
+    <div className="w-1/2 md:w/1-3 lg:w-1/4 p-1">
       <div
         className={`px-4 py-2 border-2 border-black bg-${props.color}-400 text-black rounded shadow-child font-child cursor-pointer`}
       >

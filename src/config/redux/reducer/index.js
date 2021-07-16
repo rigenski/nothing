@@ -2,6 +2,7 @@ const initialState = {
   isLoading: false,
   isLogin: false,
   user: {},
+  lastNote: "",
   notes: [],
 };
 
@@ -23,6 +24,12 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         user: action.value,
+      };
+      break;
+    case "CHANGE_LASTNOTE":
+      return {
+        ...state,
+        lastNote: action.value,
       };
       break;
     case "SET_NOTES":

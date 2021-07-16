@@ -89,7 +89,7 @@ function Login(props) {
                     * {passwordValidate[1]}
                   </span>
                 ) : null}
-              </div> 
+              </div>
               <div className="submit my-4 flex justify-between items-center">
                 <p className="text-xs">
                   New User ?,
@@ -102,7 +102,7 @@ function Login(props) {
                 </p>
                 <button
                   className={`shadow-child font-child px-4 py-2 border-2 border-black rounded ${
-                    props.isLoading
+                    props.loading
                       ? "cursor-not-allowed bg-gray-400"
                       : "cursor-pointer bg-blue-400"
                   }`}
@@ -120,7 +120,7 @@ function Login(props) {
 }
 
 const reduxState = (state) => ({
-  isLoading: state.isLoading,
+  loading: state.isLoading,
 });
 
 const reduxDispatch = (dispatch) => ({
