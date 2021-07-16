@@ -53,7 +53,7 @@ function Login(props) {
               <h1 className="font-parent  text-4xl mt-4 mb-6">nothing</h1>
               <h2 className="font-parent font-semibold text-2xl my-2">Login</h2>
             </div>
-            <div id="form-group" className="w-full font-child">
+            <div className="w-full font-child">
               <div className="email mt-2">
                 <label htmlFor="email">Email :</label>
                 <input
@@ -89,10 +89,10 @@ function Login(props) {
                     * {passwordValidate[1]}
                   </span>
                 ) : null}
-              </div>
+              </div> 
               <div className="submit my-4 flex justify-between items-center">
                 <p className="text-xs">
-                  Belum punya akun ?,
+                  New User ?,
                   <span
                     onClick={() => history.push("/register")}
                     className="text-base border-b-2 border-black cursor-pointer"

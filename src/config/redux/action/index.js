@@ -40,3 +40,15 @@ export const loginUser = (data) => (dispatch) => {
       });
   });
 };
+
+export const postDataNote = (data) => (dispatch) => {
+  firebase
+    .database()
+    .ref("notes/" + data.userId)
+    .push({
+      title: data.title,
+      content: data.content,
+      date: data.date,
+      color: data.color,
+    });
+};

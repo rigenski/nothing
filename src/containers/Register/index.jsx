@@ -56,7 +56,7 @@ function Register(props) {
                 Register
               </h2>
             </div>
-            <div id="form-group" className="w-full font-child">
+            <div className="w-full font-child">
               <div className="email mt-2">
                 <label htmlFor="email">Email :</label>
                 <input
@@ -95,7 +95,7 @@ function Register(props) {
               </div>
               <div className="submit my-4 flex justify-between items-center">
                 <p className="text-xs">
-                  Sudah punya akun ?,
+                  Have an account ?,
                   <span
                     onClick={() => history.push("/login")}
                     className="text-base border-b-2 border-black cursor-pointer"
