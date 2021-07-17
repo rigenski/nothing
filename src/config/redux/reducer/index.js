@@ -1,6 +1,6 @@
 const initialState = {
   isLoading: false,
-  isLogin: false,
+  isLogin: true,
   user: {},
   lastNote: "",
   notes: [],

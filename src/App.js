@@ -5,6 +5,8 @@ import Header from "./components/Header";
 import Home from "./containers/Home";
 import Login from "./containers/Login";
 import Register from "./containers/Register";
+import NotFound from "./containers/NotFound";
+import * as Middleware from "./middleware";
 import { Provider } from "react-redux";
 import { store } from "./config/redux/store";
 
@@ -14,14 +16,14 @@ function App() {
       <Router>
         <Fragment>
           <Route path="/" exact>
-            <Header />
-            <Home />
+            <Middleware.Authentication render={<Header />} />
+            <Middleware.Authentication render={<Home />} />
           </Route>
           <Route path="/register">
-            <Register />
+            <Middleware.Guest render={<Register />} />
           </Route>
           <Route path="/login">
-            <Login />
+            <Middleware.Guest render={<Login />} />
           </Route>
         </Fragment>
       </Router>

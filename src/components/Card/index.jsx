@@ -13,6 +13,16 @@ function Card(props) {
     }
   };
 
+  const handleRemoveNote = (id) => {
+    props.handleRemoveNote(id);
+
+    setOption(false);
+  };
+
+  const handleUpdateNote = (data) => {
+    props.handleUpdateNote(data);
+  };
+
   return (
     <div className="w-1/2 md:w/1-3 lg:w-1/4 p-1">
       <div
@@ -46,7 +56,7 @@ function Card(props) {
                   fill="none"
                   viewBox="0 0 24 24"
                   stroke="currentColor"
-                  onClick={() => props.handleRemoveNote(props.data.id)}
+                  onClick={() => handleRemoveNote(props.data.id)}
                 >
                   <path
                     strokeLinecap="round"
@@ -59,12 +69,21 @@ function Card(props) {
             ) : null}
           </div>
         </div>
-        <h2 className="font-semibold mb-2 cursor-pointer">
-          {props.data.data.title ? props.data.data.title : "No Title"}
+        <h2
+          className="font-semibold mb-2 cursor-pointer"
+          onClick={() => handleUpdateNote(props.data)}
+        >
+          {props.data.data.title
+            ? props.data.data.title.length > 22
+              ? `${props.data.data.title.substring(0, 22)}...`
+              : props.data.data.title
+            : "No Title"}
         </h2>
         <p className="text-sm">
           {props.data.data.content
-            ? props.data.data.content
+            ? props.data.data.content.length > 280
+              ? `${props.data.data.content.substring(0, 280)}...`
+              : props.data.data.content
             : "No Description Content"}
         </p>
       </div>

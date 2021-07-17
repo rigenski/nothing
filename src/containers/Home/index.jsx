@@ -37,7 +37,7 @@ function Home(props) {
     }
 
     setFormFocus(false);
-    changeLastNote();
+    changeLastNote("");
     getDataNotes();
   };
 
@@ -99,6 +99,17 @@ function Home(props) {
 
     deleteNote(data);
     getDataNotes();
+  };
+
+  const updateDataNote = (note) => {
+    console.log(note);
+    const { changeLastNote } = props;
+    changeLastNote(note.id);
+    setFormFocus(true);
+    setTitle(note.data.title);
+    setContent(note.data.content);
+    setColor(note.data.color);
+    setFormValue(true);
   };
 
   useEffect(() => {
@@ -222,6 +233,7 @@ function Home(props) {
                 <Card
                   data={note}
                   handleRemoveNote={deleteDataNote}
+                  handleUpdateNote={updateDataNote}
                   key={index}
                 />
               );
@@ -243,7 +255,7 @@ const reduxDispatch = (dispatch) => ({
   saveNote: (data) => dispatch(postDataNote(data)),
   updateNote: (data) => dispatch(updateDataNote(data)),
   deleteNote: (data) => dispatch(deleteDataNote(data)),
-  changeLastNote: () => dispatch({ type: "CHANGE_LASTNOTE", value: "" }),
+  changeLastNote: (data) => dispatch({ type: "CHANGE_LASTNOTE", value: data }),
 });
 
 export default connect(reduxState, reduxDispatch)(Home);
