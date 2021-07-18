@@ -8,6 +8,7 @@ import Register from "./containers/Register";
 import * as Middleware from "./middleware";
 import { Provider } from "react-redux";
 import { store } from "./config/redux/store";
+import Footer from "./components/Footer";
 
 const Routing = () => {
   const history = useHistory();
@@ -26,6 +27,7 @@ const Routing = () => {
       <Route path="/" exact>
         <Header />
         <Home />
+        <Footer />
       </Route>
       <Route path="/register">
         <Register />
