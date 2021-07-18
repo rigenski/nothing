@@ -13,41 +13,14 @@ function Home(props) {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [color, setColor] = useState("yellow");
-  const [isFormFocus, setFormFocus] = useState(false);
-  const [isFormValue, setFormValue] = useState(false);
+  const [formFocus, isFormFocus] = useState(false);
+  const [formValue, isFormValue] = useState(false);
+  const [loading, isLoading] = useState(false);
+  const [userId, setUserId] = useState("");
   const noteColor = ["yellow", "blue", "green", "red", "purple"];
 
   const onFormFocus = () => {
-    setFormFocus(true);
-  };
-
-  const handleCancelForm = () => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    const { lastNote, deleteNote, changeLastNote } = props;
-
-    const data = {
-      userId: userData.uid,
-      noteId: lastNote,
-    };
-
-    if (!title && !content) {
-      if (lastNote) {
-        deleteNote(data);
-      }
-    }
-
-    setFormFocus(false);
-    changeLastNote("");
-    getDataNotes();
-  };
-
-  const handleSelectColor = (selectColor) => {
-    setColor(selectColor);
-
-    if (isFormFocus) {
-      const colorContainer = document.querySelector(`.btn-${selectColor}`);
-      colorContainer.innerHTML = `<div class="h-full w-full bg-${selectColor}-400 rounded-full"></div>`;
-    }
+    isFormFocus(true);
   };
 
   const onInputChange = (e) => {
@@ -58,58 +31,100 @@ function Home(props) {
     }
   };
 
-  const handleSaveNote = () => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    const { lastNote, saveNote, updateNote } = props;
+  const handleSelectColor = (selectedColor) => {
+    setColor(selectedColor);
+
+    const changeButtonColor = (colorItem) => {
+      const colorContainer = document.querySelector(`.btn-${colorItem}`);
+      colorContainer.innerHTML = `<div class="h-full w-full bg-${colorItem}-400 rounded-full"></div>`;
+    };
+
+    if (formFocus && selectedColor === color) {
+      changeButtonColor(selectedColor);
+    } else if (formFocus && selectedColor !== color) {
+      changeButtonColor(selectedColor);
+
+      const colorContainerRemove = document.querySelector(`.btn-${color}`);
+      colorContainerRemove.removeChild(colorContainerRemove.firstChild);
+    }
+  };
+
+  const handleCancelForm = () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const { lastNote, changeLastNote, deleteNoteAPI } = props;
+
+    const data = {
+      userId: user.uid,
+      noteId: lastNote,
+    };
+
+    if (!title && !content) {
+      if (lastNote) {
+        deleteNoteAPI(data);
+      }
+    }
+
+    isFormFocus(false);
+    changeLastNote("");
+    getDataNotes();
+  };
+
+  const postDataNote = async () => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const { lastNote, postNoteAPI, updateNoteAPI } = props;
 
     const data = {
       title: title,
       content: content,
-      date: new Date().getTime(),
       color: color,
-      userId: userData.uid,
+      date: new Date().getTime(),
+      userId: user.uid,
     };
 
-    if (isFormValue) {
+    if (formValue === true) {
       data.noteId = lastNote;
 
-      updateNote(data);
+      isLoading(true);
+      await updateNoteAPI(data);
+      isLoading(false);
     } else if (title || content) {
-      saveNote(data);
+      isLoading(true);
+      await postNoteAPI(data);
+      isLoading(false);
 
-      setFormValue(true);
+      isFormValue(true);
     }
   };
 
   const getDataNotes = () => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    const { getNotes } = props;
+    const user = JSON.parse(localStorage.getItem("user"));
+    const { getNotesAPI } = props;
 
-    getNotes(userData.uid);
-  };
-
-  const deleteDataNote = (id) => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    const { deleteNote } = props;
-
-    const data = {
-      userId: userData.uid,
-      noteId: id,
-    };
-
-    deleteNote(data);
-    getDataNotes();
+    getNotesAPI(user.uid);
   };
 
   const updateDataNote = (note) => {
-    console.log(note);
     const { changeLastNote } = props;
+
     changeLastNote(note.id);
-    setFormFocus(true);
+    isFormFocus(true);
     setTitle(note.data.title);
     setContent(note.data.content);
     setColor(note.data.color);
-    setFormValue(true);
+    isFormValue(true);
+  };
+
+  const deleteDataNote = (id) => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const { deleteNoteAPI } = props;
+
+    const data = {
+      userId: user.uid,
+      noteId: id,
+    };
+
+    deleteNoteAPI(data);
+    getDataNotes();
   };
 
   useEffect(() => {
@@ -117,26 +132,26 @@ function Home(props) {
   }, []);
 
   useEffect(() => {
-    handleSaveNote();
+    postDataNote();
   }, [title, content, color]);
 
   useEffect(() => {
-    if (isFormFocus) {
+    if (formFocus) {
       handleSelectColor(color);
     } else {
       setTitle("");
       setContent("");
       setColor("yellow");
-      setFormValue(false);
+      isFormValue(false);
     }
-  }, [isFormFocus]);
+  }, [formFocus]);
 
   return (
     <main>
       <div className="container mx-auto py-4 px-2">
         <div className="flex justify-center px-1">
           <div className="w-full sm:w-2/4 md:w-2/5 border-2 border-black bg-gray-200 text-black px-4 py-2  rounded shadow-parent">
-            {isFormFocus ? (
+            {formFocus ? (
               <Fragment>
                 <input
                   id="title"
@@ -167,13 +182,13 @@ function Home(props) {
                     })}
                   </div>
                   <div className="flex items-center">
-                    {props.loading ? (
+                    {loading ? (
                       <img
                         src="https://media.tenor.com/images/69305e176c3858ae307c044d47823981/tenor.gif"
                         alt=""
                         className="h-6"
                       />
-                    ) : isFormValue ? (
+                    ) : formValue ? (
                       <button onClick={handleCancelForm}>
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -251,11 +266,11 @@ const reduxState = (state) => ({
 });
 
 const reduxDispatch = (dispatch) => ({
-  getNotes: (data) => dispatch(getDataNotes(data)),
-  saveNote: (data) => dispatch(postDataNote(data)),
-  updateNote: (data) => dispatch(updateDataNote(data)),
-  deleteNote: (data) => dispatch(deleteDataNote(data)),
-  changeLastNote: (data) => dispatch({ type: "CHANGE_LASTNOTE", value: data }),
+  getNotesAPI: (data) => dispatch(getDataNotes(data)),
+  postNoteAPI: (data) => dispatch(postDataNote(data)),
+  updateNoteAPI: (data) => dispatch(updateDataNote(data)),
+  deleteNoteAPI: (data) => dispatch(deleteDataNote(data)),
+  changeLastNote: (data) => dispatch({ type: "LAST_NOTE", value: data }),
 });
 
 export default connect(reduxState, reduxDispatch)(Home);

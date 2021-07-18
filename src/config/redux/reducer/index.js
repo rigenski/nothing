@@ -1,6 +1,6 @@
 const initialState = {
   isLoading: false,
-  isLogin: true,
+  isLogin: false,
   user: {},
   lastNote: "",
   notes: [],
@@ -8,36 +8,31 @@ const initialState = {
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "CHANGE_ISLOADING":
+    case "LOADING":
       return {
         ...state,
         isLoading: action.value,
       };
-      break;
-    case "CHANGE_ISLOGIN":
+    case "IS_LOGIN":
       return {
         ...state,
         isLogin: action.value,
       };
-      break;
-    case "CHANGE_USER":
+    case "USER":
       return {
         ...state,
         user: action.value,
       };
-      break;
-    case "CHANGE_LASTNOTE":
+    case "LAST_NOTE":
       return {
         ...state,
         lastNote: action.value,
       };
-      break;
-    case "SET_NOTES":
+    case "NOTES":
       return {
         ...state,
         notes: action.value,
       };
-      break;
     default:
       return state;
   }

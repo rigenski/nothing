@@ -9,6 +9,7 @@ function Login(props) {
   const [password, setPassword] = useState("");
   const [emailValidate, setEmailValidate] = useState([false, ""]);
   const [passwordValidate, setPasswordValidate] = useState([false, ""]);
+  const [loading, isLoading] = useState(false);
   const history = useHistory();
 
   const handleChangeText = (e) => {
@@ -20,7 +21,9 @@ function Login(props) {
   };
 
   const handleLoginSubmit = async () => {
-    const res = await props.loginUser({ email, password }).catch((err) => err);
+    isLoading(true);
+    const { loginUser } = props;
+    const res = await loginUser({ email, password }).catch((err) => err);
 
     if (res.code) {
       const { code, message } = res;
@@ -30,6 +33,8 @@ function Login(props) {
       } else {
         setPasswordValidate([true, message]);
       }
+
+      isLoading(false);
     } else {
       localStorage.setItem("user", JSON.stringify(res));
       setEmail("");
@@ -37,6 +42,7 @@ function Login(props) {
       setEmailValidate([false, ""]);
       setPasswordValidate([false, ""]);
 
+      isLoading(false);
       history.push("/");
     }
   };
@@ -102,7 +108,7 @@ function Login(props) {
                 </p>
                 <button
                   className={`shadow-child font-child px-4 py-2 border-2 border-black rounded ${
-                    props.loading
+                    loading
                       ? "cursor-not-allowed bg-gray-400"
                       : "cursor-pointer bg-blue-400"
                   }`}
@@ -119,12 +125,8 @@ function Login(props) {
   );
 }
 
-const reduxState = (state) => ({
-  loading: state.isLoading,
-});
-
 const reduxDispatch = (dispatch) => ({
   loginUser: (data) => dispatch(loginUser(data)),
 });
 
-export default connect(reduxState, reduxDispatch)(Login);
+export default connect(null, reduxDispatch)(Login);

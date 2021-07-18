@@ -9,6 +9,7 @@ function Register(props) {
   const [password, setPassword] = useState("");
   const [emailValidate, setEmailValidate] = useState([false, ""]);
   const [passwordValidate, setPasswordValidate] = useState([false, ""]);
+  const [loading, isLoading] = useState(false);
   const history = useHistory();
 
   const handleChangeText = (e) => {
@@ -20,9 +21,10 @@ function Register(props) {
   };
 
   const handleRegisterSubmit = async () => {
-    const res = await props
-      .registerUser({ email, password })
-      .catch((err) => err);
+    isLoading(true);
+
+    const { registerUser } = props;
+    const res = await registerUser({ email, password }).catch((err) => err);
 
     if (res.code) {
       const { code, message } = res;
@@ -32,12 +34,15 @@ function Register(props) {
       } else {
         setPasswordValidate([true, message]);
       }
+
+      isLoading(false);
     } else {
       setEmail("");
       setPassword("");
       setEmailValidate([false, ""]);
       setPasswordValidate([false, ""]);
 
+      isLoading(false);
       history.push("/login");
     }
   };
@@ -105,7 +110,7 @@ function Register(props) {
                 </p>
                 <button
                   className={`shadow-child font-child px-4 py-2 border-2 border-black rounded ${
-                    props.loading
+                    loading
                       ? "cursor-not-allowed bg-gray-400"
                       : "cursor-pointer bg-yellow-400"
                   }`}
@@ -122,12 +127,8 @@ function Register(props) {
   );
 }
 
-const reduxState = (state) => ({
-  loading: state.isLoading,
-});
-
 const reduxDispatch = (dispatch) => ({
   registerUser: (data) => dispatch(registerUser(data)),
 });
 
-export default connect(reduxState, reduxDispatch)(Register);
+export default connect(null, reduxDispatch)(Register);

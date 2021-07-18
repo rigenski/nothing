@@ -1,24 +1,20 @@
 import firebase, { database } from "../../firebase";
 
-export const registerUser = (data) => (dispatch) => {
-  dispatch({ type: "CHANGE_ISLOADING", value: true });
+export const registerUser = (data) => () => {
   return new Promise((resolve, reject) => {
     firebase
       .auth()
       .createUserWithEmailAndPassword(data.email, data.password)
       .then((res) => {
-        dispatch({ type: "CHANGE_ISLOADING", value: false });
         resolve(res);
       })
       .catch((error) => {
-        dispatch({ type: "CHANGE_ISLOADING", value: false });
         reject(error);
       });
   });
 };
 
-export const loginUser = (data) => (dispatch) => {
-  dispatch({ type: "CHANGE_ISLOADING", value: true });
+export const loginUser = (data) => () => {
   return new Promise((resolve, reject) => {
     firebase
       .auth()
@@ -31,18 +27,16 @@ export const loginUser = (data) => (dispatch) => {
           refreshToken: res.user.refreshToken,
         };
 
-        dispatch({ type: "CHANGE_ISLOADING", value: false });
         resolve(dataUser);
       })
       .catch((error) => {
-        dispatch({ type: "CHANGE_ISLOADING", value: false });
         reject(error);
       });
   });
 };
 
 export const postDataNote = (data) => (dispatch) => {
-  dispatch({ type: "CHANGE_ISLOADING", value: true });
+  dispatch({ type: "LOADING", value: true });
   return new Promise((resolve, reject) => {
     firebase
       .database()
@@ -57,12 +51,12 @@ export const postDataNote = (data) => (dispatch) => {
         const data = res._delegate._path.pieces_;
         const id = data.slice(-1)[0];
 
-        dispatch({ type: "CHANGE_LASTNOTE", value: id });
-        dispatch({ type: "CHANGE_ISLOADING", value: false });
+        dispatch({ type: "LAST_NOTE", value: id });
+        dispatch({ type: "LOADING", value: false });
         resolve(true);
       })
       .catch((err) => {
-        dispatch({ type: "CHANGE_ISLOADING", value: false });
+        dispatch({ type: "LOADING", value: false });
         reject(err);
       });
   });
@@ -81,7 +75,7 @@ export const getDataNotes = (userId) => (dispatch) => {
           });
         });
 
-        dispatch({ type: "SET_NOTES", value: data });
+        dispatch({ type: "NOTES", value: data });
         resolve(true);
       }
     });
@@ -89,7 +83,7 @@ export const getDataNotes = (userId) => (dispatch) => {
 };
 
 export const updateDataNote = (data) => (dispatch) => {
-  dispatch({ type: "CHANGE_ISLOADING", value: true });
+  dispatch({ type: "LOADING", value: true });
 
   const url = database.ref(`notes/${data.userId}/${data.noteId}`);
   return new Promise((resolve, reject) => {
@@ -102,10 +96,10 @@ export const updateDataNote = (data) => (dispatch) => {
       },
       (err) => {
         if (err) {
-          dispatch({ type: "CHANGE_ISLOADING", value: false });
+          dispatch({ type: "LOADING", value: false });
           reject(false);
         } else {
-          dispatch({ type: "CHANGE_ISLOADING", value: false });
+          dispatch({ type: "LOADING", value: false });
           resolve(true);
         }
       }
