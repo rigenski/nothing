@@ -78,7 +78,7 @@ function Home(props) {
       content: content,
       color: color,
       date: new Date().getTime(),
-      userId: user.uid,
+      userId: user ? user.uid : null,
     };
 
     if (formValue === true) {
@@ -100,7 +100,9 @@ function Home(props) {
     const user = JSON.parse(localStorage.getItem("user"));
     const { getNotesAPI } = props;
 
-    getNotesAPI(user.uid);
+    if (user) {
+      getNotesAPI(user.uid);
+    }
   };
 
   const updateDataNote = (note) => {
