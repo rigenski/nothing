@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { registerUser } from "../../config/redux/action";
-import Illust from "./../../assets/img/illust-login.svg";
+import Illust from "./../../assets/img/illust-register.svg";
 
 function Register(props) {
   const [email, setEmail] = useState("");

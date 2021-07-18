@@ -54,7 +54,7 @@ function Login(props) {
           <div className="w-full sm:w-2/4 md:w-2/5 border-2 border-black bg-gray-200 text-black px-4 py-2 rounded shadow-parent">
             <div className="text-center">
               <div className="flex justify-center">
-                <img src={Illust} className="w-60" />
+                <img src={Illust} className="w-60 mt-10" />
               </div>
               <h1 className="font-parent  text-4xl mt-4 mb-6">nothing</h1>
               <h2 className="font-parent font-semibold text-2xl my-2">Login</h2>
