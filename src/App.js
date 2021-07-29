@@ -24,8 +24,8 @@ const Routing = () => {
 
   return (
     <Fragment>
+      <Header />
       <Route path="/" exact>
-        <Header />
         <Home />
         <Footer />
       </Route>
