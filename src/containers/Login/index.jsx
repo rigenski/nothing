@@ -55,8 +55,12 @@ function Login(props) {
     <main>
       <div className="container mx-auto my-auto p-4">
         <div className="lg:flex lg:justify-around lg:items-center lg:mt-12">
-          <div className="flex lg:w-6/12 justify-center mt-8 mb-6">
-            <img src={IllustLogin} className="w-96 lg:w-full lg:px-16" alt="" />
+          <div className="flex lg:w-6/12 justify-center mt-4 mb-6">
+            <img
+              src={IllustLogin}
+              className="w-96 px-8 lg:w-full lg:px-16"
+              alt="illustration login"
+            />
           </div>
           <div className="flex lg:w-6/12 justify-center">
             <div className="w-full md:max-w-md md:w-full shadow-xl rounded-xl px-4 pt-6 pb-16 lg:px-8 lg:pt-12 lg:pb-18">
