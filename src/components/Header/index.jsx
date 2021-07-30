@@ -15,11 +15,22 @@ function Header(props) {
     <header>
       <div className="container mx-auto p-4">
         <div className="flex justify-between items-center">
-          <h1 className="font-app text-3xl font-extrabold">Nothing</h1>
-          <img src={Logo} alt="logo nothing" className="h-12" />
+          <div>
+            <h1 className="text-3xl font-extrabold">Nothing</h1>
+            <p className="text-md font-medium">note is everything</p>
+          </div>
+          <img src={Logo} className="h-16" alt="logo nothing" />
         </div>
       </div>
     </header>
+    // <header>
+    //   <div className="container mx-auto p-4">
+    //     <div className="flex justify-between items-center">
+    //       <h1 className="font-app text-3xl font-extrabold">Nothing</h1>
+    //       <img src={Logo} alt="logo nothing" className="h-12" />
+    //     </div>
+    //   </div>
+    // </header>
     // <header>
     //   <div className="container mx-auto py-4 px-2">
     //     <div className="flex justify-between items-center px-1">
