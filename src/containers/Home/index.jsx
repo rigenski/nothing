@@ -11,12 +11,24 @@ import Card from "./../../components/Card";
 
 function Home(props) {
   const [formFocus, setFormFocus] = useState(false);
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+  const [color, setColor] = useState("green");
+  const [user, setUser] = useState("");
 
   const onFormFocus = () => {
     if (formFocus) {
       setFormFocus(false);
     } else {
       setFormFocus(true);
+    }
+  };
+
+  const onInputChange = (e) => {
+    if (e.target.id === "title") {
+      setTitle(e.target.value);
+    } else if (e.target.id === "content") {
+      setContent(e.target.value);
     }
   };
 
@@ -30,6 +42,11 @@ function Home(props) {
       formNote.classList.add("-bottom-3/4", "hidden");
     }
   }, [formFocus]);
+
+  useEffect(() => {
+    console.log(title);
+    console.log(content);
+  }, [title, content]);
 
   return (
     <main>
@@ -135,17 +152,24 @@ function Home(props) {
 
       {/* FORM */}
       <div className="form-note w-full fixed hidden bg-opacity-25">
-        <div className="px-4 pt-24 pb-24">
+        <div className="px-4 pt-24 pb-48">
           <div className="shadow-lg rounded-lg bg-white px-4 py-8">
             <input
               type="text"
+              id="title"
               className="w-full text-xl font-bold mb-2 outline-none"
               placeholder="Title Note"
+              value={title}
+              onChange={(e) => onInputChange(e)}
             />
             <textarea
+              id="content"
               rows="24"
               className="w-full outline-none text-sm mb-6"
               placeholder="Description Note"
+              value={content}
+              onChange={(e) => onInputChange(e)}
+              autoFocus
             ></textarea>
             <div className="flex justify-between items-center">
               <ul className="flex ">
