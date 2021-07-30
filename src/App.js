@@ -24,10 +24,10 @@ const Routing = () => {
 
   return (
     <Fragment>
-      <Header />
+      <Header auth={true} />
       <Route path="/" exact>
         <Home />
-        <Footer />
+        {/* <Footer /> */}
       </Route>
       <Route path="/register">
         <Register />
