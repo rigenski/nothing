@@ -82,6 +82,18 @@ export const getDataNotes = (userId) => (dispatch) => {
   });
 };
 
+export const getDataNote = (data) => (dispatch) => {
+  const url = database.ref(`notes/${data.userId}/${data.noteId}`);
+
+  return new Promise((resolve, reject) => {
+    url.on("value", (snapshot) => {
+      const data = snapshot.val();
+
+      resolve(data);
+    });
+  });
+};
+
 export const updateDataNote = (data) => (dispatch) => {
   dispatch({ type: "LOADING", value: true });
 

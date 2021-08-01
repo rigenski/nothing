@@ -3,43 +3,43 @@ import { connect } from "react-redux";
 import { deleteDataNote } from "../../config/redux/action";
 
 function Card(props) {
-  const [isOption, setOption] = useState(false);
+  const [option, isOption] = useState(false);
 
   const handleOption = () => {
-    if (!isOption) {
-      setOption(true);
+    if (!option) {
+      isOption(true);
     } else {
-      setOption(false);
+      isOption(false);
     }
   };
 
   const handleRemoveNote = (id) => {
     props.handleRemoveNote(id);
 
-    setOption(false);
+    isOption(false);
   };
 
-  const handleUpdateNote = (data) => {
-    props.handleUpdateNote(data);
+  const handleUpdateNote = (note) => {
+    props.handleUpdateNote(note);
   };
 
   return (
-    <div className="w-1/2 md:w/1-3 lg:w-1/4 p-1">
+    <div className="w-1/2 md:w-1/3 lg:w-1/4 p-1">
       <div
-        className={`px-4 py-2 border-2 border-black bg-${props.data.data.color}-400 text-black rounded shadow-child font-child`}
+        className={`shadow-md rounded-lg p-3 pb-6 bg-${props.note.data.color}-400`}
       >
         <div className="flex justify-between items-center">
           <label className="text-xs">
-            {new Date(props.data.data.date).toISOString().slice(0, 10)}
+            {new Date(props.note.data.date).toISOString().slice(0, 10)}
           </label>
-          <div>
+          <div className="">
             <svg
               xmlns="http://www.w3.org/2000/svg"
               className="h-6 w-6 cursor-pointer"
               fill="none"
               viewBox="0 0 24 24"
               stroke="currentColor"
-              onClick={handleOption}
+              onClick={() => handleOption()}
             >
               <path
                 strokeLinecap="round"
@@ -48,44 +48,41 @@ function Card(props) {
                 d="M5 12h.01M12 12h.01M19 12h.01M6 12a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0zm7 0a1 1 0 11-2 0 1 1 0 012 0z"
               />
             </svg>
-            {isOption ? (
-              <span className="btn-delete">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6 absolute mt-1 cursor-pointer btn-delete"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                  onClick={() => handleRemoveNote(props.data.id)}
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                  />
-                </svg>
-              </span>
+            {option ? (
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                className="h-6 w-6 absolute"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                onClick={() => handleRemoveNote(props.note.id)}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+                />
+              </svg>
             ) : null}
           </div>
         </div>
-        <h2
-          className="font-semibold mb-2 cursor-pointer"
-          onClick={() => handleUpdateNote(props.data)}
-        >
-          {props.data.data.title
-            ? props.data.data.title.length > 22
-              ? `${props.data.data.title.substring(0, 22)}...`
-              : props.data.data.title
-            : "No Title"}
-        </h2>
-        <p className="text-sm">
-          {props.data.data.content
-            ? props.data.data.content.length > 280
-              ? `${props.data.data.content.substring(0, 280)}...`
-              : props.data.data.content
-            : "No Description Content"}
-        </p>
+        <div onClick={() => handleUpdateNote(props.note)}>
+          <h4 className="text-lg font-bold mb-2">
+            {props.note.data.title
+              ? props.note.data.title.length > 22
+                ? `${props.note.data.title.substring(0, 22)} ...`
+                : props.note.data.title
+              : "No Title"}
+          </h4>
+          <p className="text-sm">
+            {props.note.data.content
+              ? props.note.data.content.length > 280
+                ? `${props.note.data.content.substring(0, 280)} ...`
+                : props.note.data.content
+              : "No Description Content"}
+          </p>
+        </div>
       </div>
     </div>
   );
