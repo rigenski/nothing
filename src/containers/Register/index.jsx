@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { registerUser } from "../../config/redux/action";
+import { authRegister } from "../../config/redux/action";
 import IllustRegister from "./../../assets/img/illust-register.svg";
 
 function Register(props) {
@@ -23,8 +23,8 @@ function Register(props) {
   const handleRegisterSubmit = async () => {
     isLoading(true);
 
-    const { registerUser } = props;
-    const res = await registerUser({ email, password }).catch((err) => err);
+    const { authRegister } = props;
+    const res = await authRegister({ email, password }).catch((err) => err);
 
     if (res.code) {
       const { code, message } = res;
@@ -59,7 +59,7 @@ function Register(props) {
             />
           </div>
           <div className="flex lg:w-6/12 justify-center">
-            <div className="w-full md:max-w-md md:w-full shadow-xl rounded-xl px-4 pt-6 pb-16 lg:px-8 lg:pt-12 lg:pb-18">
+            <div className="w-full md:max-w-md md:w-full shadow-lg rounded-xl px-4 pt-6 pb-16 lg:px-8 lg:pt-12 lg:pb-18">
               <h2 className="text-2xl font-bold mb-6">Register !</h2>
               <div className="mb-2">
                 <label htmlFor="email">Email :</label>
@@ -129,7 +129,7 @@ function Register(props) {
 }
 
 const reduxDispatch = (dispatch) => ({
-  registerUser: (data) => dispatch(registerUser(data)),
+  authRegister: (data) => dispatch(authRegister(data)),
 });
 
 export default connect(null, reduxDispatch)(Register);

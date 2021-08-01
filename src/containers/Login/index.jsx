@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
-import { loginUser } from "../../config/redux/action";
+import { authLogin } from "../../config/redux/action";
 import IllustLogin from "./../../assets/img/illust-login.svg";
 
 function Login(props) {
@@ -22,8 +22,8 @@ function Login(props) {
 
   const handleLoginSubmit = async () => {
     isLoading(true);
-    const { loginUser } = props;
-    const res = await loginUser({ email, password }).catch((err) => err);
+    const { authLogin, userData } = props;
+    const res = await authLogin({ email, password }).catch((err) => err);
 
     if (res.code) {
       const { code, message } = res;
@@ -37,6 +37,7 @@ function Login(props) {
       isLoading(false);
     } else {
       localStorage.setItem("user", JSON.stringify(res));
+      userData(res.uid);
       setEmail("");
       setPassword("");
       setEmailValidate([false, ""]);
@@ -46,10 +47,6 @@ function Login(props) {
       history.push("/");
     }
   };
-
-  useEffect(() => {
-    console.log(loading);
-  }, [loading]);
 
   return (
     <main>
@@ -63,7 +60,7 @@ function Login(props) {
             />
           </div>
           <div className="flex lg:w-6/12 justify-center">
-            <div className="w-full md:max-w-md md:w-full shadow-xl rounded-xl px-4 pt-6 pb-16 lg:px-8 lg:pt-12 lg:pb-18">
+            <div className="w-full md:max-w-md md:w-full shadow-lg rounded-xl px-4 pt-6 pb-16 lg:px-8 lg:pt-12 lg:pb-18">
               <h2 className="text-2xl font-bold mb-6">Login Now !</h2>
               <div className="mb-2">
                 <label htmlFor="email">Email :</label>
@@ -133,7 +130,8 @@ function Login(props) {
 }
 
 const reduxDispatch = (dispatch) => ({
-  loginUser: (data) => dispatch(loginUser(data)),
+  authLogin: (data) => dispatch(authLogin(data)),
+  userData: (data) => dispatch({ type: "USER", value: data }),
 });
 
 export default connect(null, reduxDispatch)(Login);

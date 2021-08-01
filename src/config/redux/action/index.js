@@ -1,6 +1,6 @@
 import firebase, { database } from "../../firebase";
 
-export const registerUser = (data) => () => {
+export const authRegister = (data) => () => {
   return new Promise((resolve, reject) => {
     firebase
       .auth()
@@ -14,7 +14,7 @@ export const registerUser = (data) => () => {
   });
 };
 
-export const loginUser = (data) => () => {
+export const authLogin = (data) => () => {
   return new Promise((resolve, reject) => {
     firebase
       .auth()
@@ -36,7 +36,6 @@ export const loginUser = (data) => () => {
 };
 
 export const postDataNote = (data) => (dispatch) => {
-  dispatch({ type: "LOADING", value: true });
   return new Promise((resolve, reject) => {
     firebase
       .database()
@@ -50,13 +49,9 @@ export const postDataNote = (data) => (dispatch) => {
       .then((res) => {
         const data = res._delegate._path.pieces_;
         const id = data.slice(-1)[0];
-
-        dispatch({ type: "LAST_NOTE", value: id });
-        dispatch({ type: "LOADING", value: false });
         resolve(true);
       })
       .catch((err) => {
-        dispatch({ type: "LOADING", value: false });
         reject(err);
       });
   });
@@ -95,8 +90,6 @@ export const getDataNote = (data) => (dispatch) => {
 };
 
 export const updateDataNote = (data) => (dispatch) => {
-  dispatch({ type: "LOADING", value: true });
-
   const url = database.ref(`notes/${data.userId}/${data.noteId}`);
   return new Promise((resolve, reject) => {
     url.set(
@@ -108,10 +101,10 @@ export const updateDataNote = (data) => (dispatch) => {
       },
       (err) => {
         if (err) {
-          dispatch({ type: "LOADING", value: false });
+          // dispatch({ type: "LOADING", value: false });
           reject(false);
         } else {
-          dispatch({ type: "LOADING", value: false });
+          // dispatch({ type: "LOADING", value: false });
           resolve(true);
         }
       }

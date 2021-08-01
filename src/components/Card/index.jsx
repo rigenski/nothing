@@ -26,7 +26,13 @@ function Card(props) {
   return (
     <div className="w-1/2 md:w-1/3 lg:w-1/4 p-1">
       <div
-        className={`shadow-md rounded-lg p-3 pb-6 bg-${props.note.data.color}-400`}
+        className={`shadow-md rounded-lg p-3 pb-6 bg-${
+          props.note.data.color
+        }-400 dark:text-gray-200 ${
+          props.note.data.color === "white"
+            ? "dark:bg-gray-700"
+            : `dark:bg-opacity-80`
+        }`}
       >
         <div className="flex justify-between items-center">
           <label className="text-xs">

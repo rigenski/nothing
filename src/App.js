@@ -27,7 +27,7 @@ const Routing = () => {
       <Route path="/" exact>
         <Header auth={true} />
         <Home />
-        {/* <Footer /> */}
+        <Footer />
       </Route>
       <Route path="/register">
         <Header auth={false} />

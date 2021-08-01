@@ -1,37 +1,33 @@
 const initialState = {
-  isLoading: false,
-  isLogin: false,
-  user: {},
-  lastNote: "",
+  user: "",
   notes: [],
+  darkMode: false,
 };
+
+if (!initialState.user) {
+  const user = JSON.parse(localStorage.getItem("user"));
+
+  if (user) {
+    initialState.user = user.uid;
+  }
+}
 
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "LOADING":
-      return {
-        ...state,
-        isLoading: action.value,
-      };
-    case "IS_LOGIN":
-      return {
-        ...state,
-        isLogin: action.value,
-      };
     case "USER":
       return {
         ...state,
         user: action.value,
       };
-    case "LAST_NOTE":
-      return {
-        ...state,
-        lastNote: action.value,
-      };
     case "NOTES":
       return {
         ...state,
         notes: action.value,
+      };
+    case "DARK_MODE":
+      return {
+        ...state,
+        darkMode: action.value,
       };
     default:
       return state;
