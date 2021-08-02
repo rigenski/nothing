@@ -1,5 +1,8 @@
 module.exports = {
-  purge: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+  purge: {
+    content: ["./src/**/*.{js,jsx,ts,tsx}", "./public/index.html"],
+    safelist: ["bg-blue-500", "bg-green-500", "bg-red-500", "bg-purple-500"],
+  },
   experimental: {
     darkModeVariant: true,
   },
@@ -11,14 +14,4 @@ module.exports = {
     extend: {},
   },
   plugins: [],
-  purge: [
-    "./containers/**/*.js",
-    "./containers/**/*.ts",
-    "./containers/**/*.jsx",
-    "./containers/**/*.tsx",
-    "./components/**/*.js",
-    "./components/**/*.ts",
-    "./components/**/*.jsx",
-    "./components/**/*.tsx",
-  ],
 };
