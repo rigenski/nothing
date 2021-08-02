@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { authLogin } from "../../config/redux/action";
@@ -22,7 +22,7 @@ function Login(props) {
 
   const handleLoginSubmit = async () => {
     isLoading(true);
-    const { authLogin, userData } = props;
+    const { isLogin, authLogin, userData } = props;
     const res = await authLogin({ email, password }).catch((err) => err);
 
     if (res.code) {
@@ -37,6 +37,8 @@ function Login(props) {
       isLoading(false);
     } else {
       localStorage.setItem("user", JSON.stringify(res));
+
+      isLogin(true);
       userData(res.uid);
       setEmail("");
       setPassword("");
@@ -130,6 +132,7 @@ function Login(props) {
 }
 
 const reduxDispatch = (dispatch) => ({
+  isLogin: (data) => dispatch({ type: "IS_LOGIN", value: data }),
   authLogin: (data) => dispatch(authLogin(data)),
   userData: (data) => dispatch({ type: "USER", value: data }),
 });

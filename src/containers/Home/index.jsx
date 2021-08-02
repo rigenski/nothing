@@ -184,12 +184,12 @@ function Home(props) {
   }, []);
 
   return (
-    <main className={`flex-grow ${props.darkMode ? "dark" : ""}`}>
-      <div className="dark:bg-gray-800">
+    <main className="flex-grow transition-all dark:bg-gray-800">
+      <div className="dark:text-gray-200">
         <div className="container mx-auto pb-4 pt-24 px-3">
           <div>
             <div className="mb-4 px-1">
-              <h1 className="text-3xl font-extrabold">My Notes</h1>
+              <h1 className="text-3xl font-extrabold ">My Notes</h1>
             </div>
             <div className="flex flex-row flex-wrap">
               {props.notes
@@ -229,8 +229,8 @@ function Home(props) {
         </div>
 
         {/* FORM */}
-        <div className="form-note w-full fixed hidden bg-opacity-25 pb-96">
-          <div className="px-4 pt-24 pb-96 container max-w-screen-sm mx-auto">
+        <div className="form-note w-full fixed hidden bg-opacity-25 pb-96 dark:bg-opacity-50">
+          <div className="px-4 pt-24 pb-96 container max-w-screen-sm mx-auto dark:text-gray-800">
             <div className="shadow-lg rounded-lg bg-white px-4 py-8">
               <input
                 type="text"
@@ -301,7 +301,6 @@ function Home(props) {
 const reduxState = (state) => ({
   notes: state.notes,
   user: state.user,
-  darkMode: state.darkMode,
 });
 
 const reduxDispatch = (dispatch) => ({

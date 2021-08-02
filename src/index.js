@@ -3,12 +3,16 @@ import ReactDOM from "react-dom";
 import "./index.css";
 import "./styles/main.css";
 import App from "./App";
+import { Provider } from "react-redux";
+import { store } from "./config/redux/store";
 import reportWebVitals from "./reportWebVitals";
 require("dotenv").config();
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>,
   document.getElementById("root")
 );

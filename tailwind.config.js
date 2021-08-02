@@ -11,4 +11,14 @@ module.exports = {
     extend: {},
   },
   plugins: [],
+  purge: [
+    "./containers/**/*.js",
+    "./containers/**/*.ts",
+    "./containers/**/*.jsx",
+    "./containers/**/*.tsx",
+    "./components/**/*.js",
+    "./components/**/*.ts",
+    "./components/**/*.jsx",
+    "./components/**/*.tsx",
+  ],
 };

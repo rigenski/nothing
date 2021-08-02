@@ -2,6 +2,7 @@ const initialState = {
   user: "",
   notes: [],
   darkMode: false,
+  login: false,
 };
 
 if (!initialState.user) {
@@ -28,6 +29,11 @@ const reducer = (state = initialState, action) => {
       return {
         ...state,
         darkMode: action.value,
+      };
+    case "IS_LOGIN":
+      return {
+        ...state,
+        login: action.value,
       };
     default:
       return state;

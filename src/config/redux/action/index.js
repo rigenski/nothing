@@ -101,10 +101,8 @@ export const updateDataNote = (data) => (dispatch) => {
       },
       (err) => {
         if (err) {
-          // dispatch({ type: "LOADING", value: false });
           reject(false);
         } else {
-          // dispatch({ type: "LOADING", value: false });
           resolve(true);
         }
       }

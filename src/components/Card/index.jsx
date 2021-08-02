@@ -73,7 +73,10 @@ function Card(props) {
             ) : null}
           </div>
         </div>
-        <div onClick={() => handleUpdateNote(props.note)}>
+        <div
+          className="cursor-pointer "
+          onClick={() => handleUpdateNote(props.note)}
+        >
           <h4 className="text-lg font-bold mb-2">
             {props.note.data.title
               ? props.note.data.title.length > 22

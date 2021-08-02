@@ -1,33 +1,5 @@
-@import url("https://fonts.googleapis.com/css2?family=Comfortaa&display=swap");
-@import url("https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700;800&display=swap");
-
-.font-parent {
-  font-family: "Comfortaa", cursive;
-}
-
-.font-child {
-  font-family: "IBM Plex Mono", monospace;
-}
 
 .font-app {
   font-family: "Manrope", sans-serif;
-}
-
-.shadow-parent {
-  box-shadow: 0.4rem 0.4rem 0 #000;
-  transition: all 0.3s ease;
-}
-
-.shadow-parent:hover {
-  box-shadow: 0.2rem 0.2rem 0 #000;
-}
-
-.shadow-child {
-  box-shadow: 0.2rem 0.2rem 0 #000;
-  transition: all 0.3s ease;
-}
-
-.shadow-child:hover {
-  box-shadow: 0.1rem 0.1rem 0 #000;
 }

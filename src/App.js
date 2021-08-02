@@ -1,54 +1,39 @@
-import { Fragment, useEffect } from "react";
+import React, { useEffect } from "react";
 import "./App.css";
-import { BrowserRouter as Router, Route, useHistory } from "react-router-dom";
-import Header from "./components/Header";
-import Home from "./containers/Home";
-import Login from "./containers/Login";
-import Register from "./containers/Register";
-import * as Middleware from "./middleware";
-import { Provider } from "react-redux";
-import { store } from "./config/redux/store";
-import Footer from "./components/Footer";
+import Router from "./router";
 
-const Routing = () => {
-  const history = useHistory();
-  const user = JSON.parse(localStorage.getItem("user"));
+import { connect } from "react-redux";
 
+function App(props) {
   useEffect(() => {
+    const user = JSON.parse(localStorage.getItem("user"));
+    const { isLogin } = props;
+
     if (user) {
-      history.push("/");
+      isLogin(true);
     } else {
-      history.push("/login");
+      isLogin(false);
     }
-  }, []);
+  }, [props.login]);
 
   return (
-    <Fragment>
-      <Route path="/" exact>
-        <Header auth={true} />
-        <Home />
-        <Footer />
-      </Route>
-      <Route path="/register">
-        <Header auth={false} />
-        <Register />
-      </Route>
-      <Route path="/login">
-        <Header auth={false} />
-        <Login />
-      </Route>
-    </Fragment>
-  );
-};
-
-function App() {
-  return (
-    <Provider store={store}>
-      <Router>
-        <Routing />
-      </Router>
-    </Provider>
+    <div
+      className={`font-app text-gray-800 flex flex-col h-screen ${
+        props.darkMode ? "dark" : ""
+      }`}
+    >
+      <Router />
+    </div>
   );
 }
 
-export default App;
+const reduxState = (state) => ({
+  darkMode: state.darkMode,
+  login: state.login,
+});
+
+const reduxDispatch = (dispatch) => ({
+  isLogin: (data) => dispatch({ type: "IS_LOGIN", value: data }),
+});
+
+export default connect(reduxState, reduxDispatch)(App);

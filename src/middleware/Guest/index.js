@@ -1,22 +1,22 @@
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 
-function Authentication(props) {
+function Guest(props) {
   const history = useHistory();
-  const { login } = props;
+
   useEffect(() => {
-    if (login) {
+    if (props.login) {
+      console.log("heeh");
       history.push("/");
     }
-  });
+  }, [props.login]);
+
   return props.render;
 }
 
 const reduxState = (state) => ({
-  login: state.isLogin,
+  login: state.login,
 });
 
-const reduxDispatch = (dispatch) => ({});
-
-export default connect(reduxState, reduxDispatch)(Authentication);
+export default connect(reduxState, null)(Guest);
