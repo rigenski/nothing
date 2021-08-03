@@ -7,7 +7,6 @@ function Guest(props) {
 
   useEffect(() => {
     if (props.login) {
-      console.log("heeh");
       history.push("/");
     }
   }, [props.login]);

@@ -7,10 +7,11 @@ import { connect } from "react-redux";
 function App(props) {
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("user"));
-    const { isLogin } = props;
+    const { setUser, isLogin } = props;
 
     if (user) {
       isLogin(true);
+      setUser(user.uid);
     } else {
       isLogin(false);
     }
@@ -19,7 +20,7 @@ function App(props) {
   return (
     <div
       className={`font-app text-gray-800 flex flex-col h-screen ${
-        props.darkMode ? "dark" : ""
+        props.darkTheme ? "dark" : ""
       }`}
     >
       <Router />
@@ -28,11 +29,12 @@ function App(props) {
 }
 
 const reduxState = (state) => ({
-  darkMode: state.darkMode,
+  darkTheme: state.darkTheme,
   login: state.login,
 });
 
 const reduxDispatch = (dispatch) => ({
+  setUser: (data) => dispatch({ type: "SET_USER", value: data }),
   isLogin: (data) => dispatch({ type: "IS_LOGIN", value: data }),
 });
 

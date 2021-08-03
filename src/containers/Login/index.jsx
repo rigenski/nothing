@@ -69,8 +69,10 @@ function Login(props) {
                 <input
                   type="text"
                   id="email"
-                  className={`block w-full px-4 py-2 bg-gray-200 mt-2 rounded-lg ${
-                    emailValidate[0] ? "border-2 border-red-500" : "border-none"
+                  className={`block w-full px-4 py-2 bg-gray-200 mt-2 rounded-lg  focus:outline-none ${
+                    emailValidate[0]
+                      ? "border-2 border-red-500"
+                      : "border-none focus:ring-2 focus:ring-blue-600"
                   }`}
                   placeholder="user@email.com"
                   value={email}
@@ -87,10 +89,10 @@ function Login(props) {
                 <input
                   type="password"
                   id="password"
-                  className={`block w-full px-4 py-2 bg-gray-200 mt-2 rounded-lg ${
+                  className={`block w-full px-4 py-2 bg-gray-200 mt-2 rounded-lg focus:outline-none ${
                     passwordValidate[0]
                       ? "border-2 border-red-500"
-                      : "border-none"
+                      : "border-none focus:ring-2 focus:ring-blue-600"
                   }`}
                   placeholder="********"
                   value={password}
@@ -106,17 +108,17 @@ function Login(props) {
                 <p>
                   New User ?{" "}
                   <span
-                    className="font-bold text-blue-500 border-b-2 border-blue-500"
+                    className="font-bold text-blue-500 border-b-2 border-blue-500 cursor-pointer transition hover:text-blue-600"
                     onClick={() => history.push("/register")}
                   >
                     Register
                   </span>
                 </p>
                 <button
-                  className={`text-white px-6 py-2 rounded-lg ${
+                  className={`text-white px-6 py-2 rounded-lg transition focus:outline-none  ${
                     loading
                       ? "cursor-not-allowed bg-gray-400"
-                      : "cursor-pointer bg-blue-500"
+                      : "cursor-pointer bg-blue-500 hover:bg-blue-600 focus:ring-2 focus:ring-blue-600"
                   }`}
                   onClick={() => handleLoginSubmit()}
                 >

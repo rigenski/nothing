@@ -26,16 +26,16 @@ function Card(props) {
   return (
     <div className="w-1/2 md:w-1/3 lg:w-1/4 p-1">
       <div
-        className={`shadow-md rounded-lg p-3 pb-6 bg-${
+        className={`shadow-md rounded-lg p-3 pb-6 transition bg-${
           props.note.data.color
-        }-400 dark:text-gray-200 ${
+        }-400 dark:text-white ${
           props.note.data.color === "white"
             ? "dark:bg-gray-700"
             : `dark:bg-opacity-80`
         }`}
       >
         <div className="flex justify-between items-center">
-          <label className="text-xs">
+          <label className="text-xs transition">
             {new Date(props.note.data.date).toISOString().slice(0, 10)}
           </label>
           <div className="">
@@ -77,14 +77,14 @@ function Card(props) {
           className="cursor-pointer "
           onClick={() => handleUpdateNote(props.note)}
         >
-          <h4 className="text-lg font-bold mb-2">
+          <h4 className="text-lg font-bold mb-2 transition">
             {props.note.data.title
               ? props.note.data.title.length > 22
                 ? `${props.note.data.title.substring(0, 22)} ...`
                 : props.note.data.title
               : "No Title"}
           </h4>
-          <p className="text-sm">
+          <p className="text-sm transition">
             {props.note.data.content
               ? props.note.data.content.length > 280
                 ? `${props.note.data.content.substring(0, 280)} ...`
