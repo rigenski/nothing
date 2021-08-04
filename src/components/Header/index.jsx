@@ -114,7 +114,7 @@ function Header(props) {
               drawerNav ? "fixed" : "hidden"
             }`}
           >
-            <div className="absolute w-full bottom-0 bg-white rounded-t-lg transition dark:bg-gray-800">
+            <div className="absolute w-full pb-8 bottom-0 bg-white rounded-t-lg transition dark:bg-gray-800">
               <div className="container mx-auto flex justify-between p-4 ">
                 <button
                   className={`p-2 mr-2 rounded-lg border-2 transition md:block ${
