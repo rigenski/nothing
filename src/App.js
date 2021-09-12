@@ -1,5 +1,4 @@
 import React, { useEffect } from "react";
-import "./App.css";
 import Router from "./router";
 
 import { connect } from "react-redux";

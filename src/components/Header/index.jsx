@@ -1,9 +1,10 @@
-import React, { Fragment, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { useHistory } from "react-router-dom";
 import Logo from "./../../assets/img/logo-nothing.svg";
 
 function Header(props) {
+  const [width, setWidth] = useState(0);
   const [drawerNav, isDrawerNav] = useState(false);
   const history = useHistory();
 
@@ -28,17 +29,41 @@ function Header(props) {
   };
 
   const onDrawerClick = () => {
+    const html = document.querySelector("html");
+
     if (drawerNav) {
+      html.classList.remove("overflow-hidden");
       isDrawerNav(false);
     } else {
+      html.classList.add("overflow-hidden");
       isDrawerNav(true);
     }
   };
+
+  useEffect(() => {
+    window.addEventListener("resize", () => {
+      const { innerWidth } = window;
+
+      setWidth(innerWidth);
+
+      if (innerWidth > 768) {
+        isDrawerNav(false);
+      }
+    });
+  }, [width]);
 
   return (
     <Fragment>
       {props.login === true ? (
         <Fragment>
+          {/* background */}
+          <div
+            className={`fixed h-screen w-full z-40 bg-black md:hidden ${
+              drawerNav ? "block bg-opacity-75" : "hidden bg-opacity-0"
+            }`}
+          />
+
+          {/* header */}
           <header className="fixed bg-white w-full shadow-md z-50 transition dark:bg-gray-800">
             <div className="container mx-auto p-4">
               <div className="flex justify-between items-center">
@@ -110,11 +135,11 @@ function Header(props) {
 
           {/* nav */}
           <div
-            className={`fixed w-full h-screen z-40 bg-black bg-opacity-40 md:hidden ${
-              drawerNav ? "fixed" : "hidden"
+            className={`fixed w-full z-50 transform bottom-0 md:hidden ${
+              drawerNav ? "translate-y-0" : "translate-y-16"
             }`}
           >
-            <div className="absolute w-full pb-8 bottom-0 bg-white rounded-t-lg transition dark:bg-gray-800">
+            <div className="w-full bg-white rounded-t-lg transition dark:bg-gray-800">
               <div className="container mx-auto flex justify-between p-4 ">
                 <button
                   className={`p-2 mr-2 rounded-lg border-2 transition md:block ${
